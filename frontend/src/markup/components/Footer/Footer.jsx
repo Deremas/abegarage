@@ -141,7 +141,7 @@ function Footer() {
                         </button>
                         <label
                           className="subscription-label"
-                          for="subscription-email"
+                          htmlFor="subscription-email"
                         ></label>
                       </div>
                     </form>

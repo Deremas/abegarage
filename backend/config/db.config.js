@@ -1,10 +1,12 @@
 const mysql = require("mysql2/promise");
 // Prepare connection parameters we use to connect to the database
 const dbConfig = {
+  host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  // port: process.env.DB_PORT || 3306,
+  port: process.env.DB_PORT,
+  waitForConnections: true,
   connectionLimit: 10,
 };
 // Create a pool of connections to the database

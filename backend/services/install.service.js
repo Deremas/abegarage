@@ -7,6 +7,7 @@ async function install() {
   // Create a variable to hold the path to our SQL file
   const queryFile = __dirname + "/sql/initial-queries.sql";
   // const queryFile = "./sql/initial-queries.sql";
+  console.log("DB: ", process.env.DB_NAME);
   console.log(queryFile);
   //  Temporary variable, used to store all queries, then return message and current query
   let queries = [];
