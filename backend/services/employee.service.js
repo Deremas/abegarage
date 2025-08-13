@@ -64,7 +64,6 @@ const createEmployee = async (employee) => {
   // Return the created employee object
   return createdEmployee;
 };
-
 // A function to get employee by email
 async function getEmployeeByEmail(employee_email) {
   // const query =
@@ -106,6 +105,19 @@ async function getEmployeeByEmail(employee_email) {
   const rows = await connection.query(query, [employee_email]);
   return rows;
 }
+// A function to get all employees
+const getAllEmployees = async () => {
+  const query =
+    "SELECT * FROM employee INNER JOIN employee_info ON employee.employee_id = employee_info.employee_id INNER JOIN employee_role ON employee.employee_id = employee_role.employee_id INNER JOIN company_roles ON employee_role.company_role_id = company_roles.company_role_id ORDER BY employee.employee_id DESC limit 10";
+
+  const rows = await connection.query(query);
+  return rows;
+};
 
 // Export the functions
-module.exports = { checkIfEmployeeExists, createEmployee, getEmployeeByEmail };
+module.exports = {
+  checkIfEmployeeExists,
+  createEmployee,
+  getEmployeeByEmail,
+  getAllEmployees,
+};
