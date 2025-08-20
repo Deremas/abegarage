@@ -9,11 +9,18 @@ const sanitize = require("sanitize")
 const cors = require("cors");
 // Setup the cors options 
 const corsOptions = {
-  origin: process.env.FRONTEND_URL, // Allow requests from the frontend URL
+  origin: "*", // Allow requests from any origin
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Allowed HTTP methods
-  optionsSuccessStatus: 200, // 
-  // credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  optionsSuccessStatus: 200,
+  // credentials: true, // ❌ Do not use credentials when origin is "*"
 };
+
+// const corsOptions = {
+//   origin: process.env.FRONTEND_URL, // Allow requests from the frontend URL
+//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Allowed HTTP methods
+//   optionsSuccessStatus: 200, // 
+//   // credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+// };
 // Create a variable to hold our port number
 const PORT = process.env.PORT;
 // Import the router

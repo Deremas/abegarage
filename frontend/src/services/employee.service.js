@@ -32,9 +32,50 @@ const getAllEmployees = async (token) => {
   return response;
 };
 
+//A function to edit an employee
+const editEmployee = async (updatedEmployeeData, loggedInEmployeeToken, id) => {
+  console.log(updatedEmployeeData);
+  console.log(id);
+  console.log(loggedInEmployeeToken);
+  const requestOptions = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": loggedInEmployeeToken,
+    },
+    body: JSON.stringify(updatedEmployeeData),
+  };
+  const response = await fetch(`${api_url}/api/employee/${id}`, requestOptions);
+  console.log(response);
+
+  console.log(`Request Options:`, requestOptions);
+  console.log(`Response Status:`, response.status);
+  return response;
+};
+
+//A function to delete an employee
+const deleteEmployee = async (employeeId, loggedInEmployeeToken) => {
+  const requestOptions = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": loggedInEmployeeToken,
+    },
+  };
+  const response = await fetch(
+    `${api_url}/api/employee/${employeeId}`,
+    requestOptions
+  );
+  return response;
+};
+
+
+
 // Export all functions
 const employeeService = {
   createEmployee,
   getAllEmployees,
+  editEmployee,
+  deleteEmployee
 };
 export default employeeService;

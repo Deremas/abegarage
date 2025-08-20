@@ -262,3 +262,10 @@ input:disabled {
 .change-status {
   cursor: pointer;
 }
+
+
+/* Quality Feature Section */
+.features-section .image {
+  margin-top: 100px;
+  height: 80%;
+}

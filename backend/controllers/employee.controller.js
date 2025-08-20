@@ -53,4 +53,76 @@ const getAllEmployees = async (req, res, next) => {
   }
 };
 
-module.exports = { createEmployee, getAllEmployees };
+//Write a function to get a single employee by id
+async function getEmployeeById(req, res, next) {
+  try {
+    const employeeId = req.params.id;
+    //call the service
+    const result = await employeeService.getEmployeeById(employeeId);
+
+    if (!result.success) {
+      return res.status(404).json(result);
+    }
+    res.status(200).json(result);
+  } catch (error) {
+    //Log and handle error
+    console.error("Error fetching employee", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching employee",
+    });
+  }
+}
+
+//Write a function to edit the employee
+async function editEmployee(req, res, next) {
+  try {
+    const employeeId = req.params.id;
+    console.log(employeeId)
+    const employeeData = req.body;
+    console.log(employeeData)
+    //call the service
+    const result = await employeeService.editEmployee(employeeId, employeeData);
+
+    if (!result.success) {
+      return res.status(404).json(result);
+    }
+    res.status(200).json(result);
+  } catch (error) {
+    //Log and handle error
+    console.error("Error updating employee", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Error updating employee",
+    });
+  }
+}
+
+//Write a function to delete an employee
+async function deleteEmployee(req, res, next) {
+  try {
+    const employeeId = req.params.id;
+    //call the service
+    const result = await employeeService.deleteEmployee(employeeId);
+
+    if (!result.success) {
+      return res.status(404).json(result);
+    }
+    res.status(200).json(result);
+  } catch (error) {
+    //Log and handle error
+    console.error("Error deleting employee", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Error deleting employee",
+    });
+  }
+}
+
+module.exports = { 
+  createEmployee,
+  getAllEmployees,
+  getEmployeeById,
+  editEmployee,
+  deleteEmployee 
+};

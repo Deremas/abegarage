@@ -114,10 +114,103 @@ const getAllEmployees = async () => {
   return rows;
 };
 
+async function editEmployee(employee_id, employeeData) {
+  console.log("Updating employee with data:", employeeData);
+
+  try {
+    const {
+      employee_first_name = null,
+      employee_last_name = null,
+      employee_phone = null,
+      active_employee = null,
+    } = employeeData;
+
+    const clean = (val) => (typeof val === 'undefined' ? null : val);
+
+    const query = `
+      UPDATE employee_info
+      INNER JOIN employee ON employee.employee_id = employee_info.employee_id
+      SET 
+        employee_info.employee_first_name = ?,
+        employee_info.employee_last_name = ?,
+        employee_info.employee_phone = ?,
+        employee.active_employee = ?
+      WHERE 
+        employee.employee_id = ?
+    `;
+
+    const rows = await connection.query(query, [
+      clean(employee_first_name),
+      clean(employee_last_name),
+      clean(employee_phone),
+      clean(active_employee),
+      clean(employee_id),
+    ]);
+
+    if (rows.affectedRows === 0) {
+      return {
+        success: false,
+        message: "No matching employee found or no changes were made.",
+      };
+    }
+
+    return { success: true, message: "Employee updated successfully" };
+  } catch (error) {
+    console.error("Error editing employee:", error);
+    throw new Error("Database query failed");
+  }
+}
+
+// single employee by id
+async function getEmployeeById(employee_id) {
+  const query =
+    "SELECT * FROM employee INNER JOIN employee_info ON employee.employee_id = employee_info.employee_id INNER JOIN employee_pass ON employee.employee_id = employee_pass.employee_id INNER JOIN employee_role ON employee.employee_id = employee_role.employee_id WHERE employee.employee_id = ?";
+  const rows = await connection.query(query, [employee_id]);
+  return rows;
+}
+
+//A function to delete an employee
+async function deleteEmployee(employee_id) {
+  try {
+    // Delete from child tables first to satisfy foreign key constraints
+    await connection.query("DELETE FROM employee_info WHERE employee_id = ?", [
+      employee_id,
+    ]);
+    await connection.query("DELETE FROM employee_role WHERE employee_id = ?", [
+      employee_id,
+    ]);
+    await connection.query("DELETE FROM employee_pass WHERE employee_id = ?", [
+      employee_id,
+    ]);
+
+    // Delete from the main employee table
+    const result = await connection.query(
+      "DELETE FROM employee WHERE employee_id = ?",
+      [employee_id]
+    );
+
+    // Check if the deletion was successful
+    if (result.affectedRows === 0) {
+      return {
+        success: false,
+        message: "No matching employee found.",
+      };
+    }
+
+    return { success: true, message: "Employee deleted successfully" };
+  } catch (error) {
+    console.error("Error deleting employee:", error.message);
+    throw new Error(`Database query failed: ${error.message}`);
+  }
+}
+
 // Export the functions
 module.exports = {
   checkIfEmployeeExists,
   createEmployee,
   getEmployeeByEmail,
   getAllEmployees,
+  editEmployee,
+  getEmployeeById,
+  deleteEmployee,
 };

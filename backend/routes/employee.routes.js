@@ -19,5 +19,24 @@ router.get(
   employeeController.getAllEmployees
 );
 
+router.put(
+  "/api/employee/:id",
+  // [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  employeeController.editEmployee
+);
+
+// Geting  single employee
+router.get(
+  "/api/employee/:id",
+  // [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  employeeController.getEmployeeById
+);
+
+router.delete(
+  "/api/employee/:id",
+  // [authMiddleware.verifyToken, authMiddleware.isAdmin],
+  employeeController.deleteEmployee
+)
+
 // Export the router to be used in other modules
 module.exports = router;
