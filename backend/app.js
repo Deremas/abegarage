@@ -4,10 +4,10 @@ const express = require("express");
 const dotenv = require("dotenv");
 dotenv.config();
 // Import sanitizee module
-const sanitize = require("sanitize")
+const sanitize = require("sanitize");
 // import cors module
 const cors = require("cors");
-// Setup the cors options 
+// Setup the cors options
 const corsOptions = {
   origin: "*", // Allow requests from any origin
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Allowed HTTP methods
@@ -18,13 +18,9 @@ const corsOptions = {
 // const corsOptions = {
 //   origin: process.env.FRONTEND_URL, // Allow requests from the frontend URL
 //   methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Allowed HTTP methods
-//   optionsSuccessStatus: 200, // 
+//   optionsSuccessStatus: 200, //
 //   // credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 // };
-
-app.use("/", (req, res) => {
-  res.send("API is running...");
-});
 // Create a variable to hold our port number
 const PORT = process.env.PORT;
 // Import the router
@@ -33,10 +29,14 @@ const router = require("./routes");
 const app = express();
 // Add the cors middleware to allow cross-origin requests
 app.use(cors(corsOptions));
-// Add the express.json middleware 
-app.use(express.json())
+// Add the express.json middleware
+app.use(express.json());
 // Add the sanitizer to the express middleware
-app.use(sanitize.middleware)
+app.use(sanitize.middleware);
+// Default route
+app.get("/", (req, res) => {
+  res.send("Welcome to the ABE Garage API");
+});
 // Add the routes to the application as a middleware
 app.use(router);
 // Start the webserver
