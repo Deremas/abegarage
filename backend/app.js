@@ -21,6 +21,10 @@ const corsOptions = {
 //   optionsSuccessStatus: 200, // 
 //   // credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 // };
+
+app.use("/", (req, res) => {
+  res.send("API is running...");
+});
 // Create a variable to hold our port number
 const PORT = process.env.PORT;
 // Import the router
