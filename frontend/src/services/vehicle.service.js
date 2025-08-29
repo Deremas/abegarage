@@ -1,5 +1,5 @@
 //Import from the env
-const api_url = import.meta.env.VITE_API_URL;
+const api_url = import.meta.env.VITE_APP_API_URL;
 //A function to create a new vehicle information
 const createVehicle = async (formVehicleData, loggedInEmployeeToken) => {
   console.log(formVehicleData);

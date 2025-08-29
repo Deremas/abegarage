@@ -1,5 +1,5 @@
 //Import from the env
-const api_url = import.meta.env.VITE_API_URL;
+const api_url = import.meta.env.VITE_APP_API_URL;
 
 //A function to send post request to create a new customer
 const createCustomer = async (formData, loggedInEmployeeToken) => {
@@ -73,7 +73,6 @@ const customerSearch = async (searchQuery, loggedInEmployeeToken) => {
 
     const responseData = await response.json();
     return responseData.data; // Directly return the data array
-
   } catch (error) {
     console.error("Search error:", error);
     throw error;

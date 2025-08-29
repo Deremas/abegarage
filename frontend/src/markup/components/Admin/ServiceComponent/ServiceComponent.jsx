@@ -176,6 +176,7 @@ function ServiceComponent() {
               </div>
               <div className="form-group">
                 <textarea
+                  style={{ width: "60%" }}
                   name="service_description"
                   value={service_description}
                   onChange={(e) => setServiceDescription(e.target.value)}

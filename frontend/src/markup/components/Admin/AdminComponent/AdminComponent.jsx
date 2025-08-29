@@ -15,9 +15,8 @@ function AdminComponent() {
               <div className="inner-box hvr-float-shadow">
                 <h5>Open for all</h5>
                 <h2>All Orders</h2>
-                <a href="#" className="read-more">
-                  LIST OF ORDERS +
-                </a>
+                <span className="read-more">LIST OF ORDERS +</span>
+
                 <div className="icon">
                   <span className="fi fi-rr-document"></span>
                 </div>
@@ -29,9 +28,8 @@ function AdminComponent() {
               <div className="inner-box hvr-float-shadow">
                 <h5> OPEN FOR LEADS</h5>
                 <h2>ADD ORDERS</h2>
-                <a href="#" className="read-more">
-                  ADD ORDER +
-                </a>
+                <span className="read-more">ADD ORDER +</span>
+
                 <div className="icon">
                   <span className="fi fi-rr-file-edit"></span>
                 </div>
@@ -42,10 +40,9 @@ function AdminComponent() {
             <Link to="/admin/employees">
               <div className="inner-box hvr-float-shadow">
                 <h5>OPEN FOR ADMINS</h5>
-                <h2>Employee</h2>
-                <a href="#" className="read-more">
-                  LIST OF EMPLOYEES +
-                </a>
+                <h2>Employees</h2>
+                <span className="read-more">LIST OF EMPLOYEES +</span>
+
                 <div className="icon">
                   <span className="fi fi-rr-users"></span>
                 </div>
@@ -57,9 +54,8 @@ function AdminComponent() {
               <div className="inner-box hvr-float-shadow">
                 <h5>OPEN FOR ADMIN</h5>
                 <h2>Add Employee</h2>
-                <a href="#" className="read-more">
-                  Add Employee +
-                </a>
+                <span className="read-more">Add Employee +</span>
+
                 <div className="icon">
                   <span className="fi fi-rr-user"></span>
                 </div>
@@ -71,9 +67,8 @@ function AdminComponent() {
               <div className="inner-box hvr-float-shadow">
                 <h5>OPEN FOR ADMINS</h5>
                 <h2>Customers</h2>
-                <a href="#" className="read-more">
-                  LIST OF CUSTOMERS +
-                </a>
+                <span className="read-more">LIST OF CUSTOMERS +</span>
+
                 <div className="icon">
                   <span className="fi fi-rr-users-alt"></span>
                 </div>
@@ -85,9 +80,8 @@ function AdminComponent() {
               <div className="inner-box hvr-float-shadow">
                 <h5>OPEN FOR ADMINS</h5>
                 <h2>Add Customer</h2>
-                <a href="#" className="read-more">
-                  Add Customer
-                </a>
+                <span className="read-more">Add Customer</span>
+
                 <div className="icon">
                   <span className="fi fi-rr-user"></span>
                 </div>
@@ -99,9 +93,8 @@ function AdminComponent() {
               <div className="inner-box hvr-float-shadow">
                 <h5>OPEN FOR ADMINS</h5>
                 <h2>Services</h2>
-                <a href="#" className="read-more">
-                  Services
-                </a>
+                <span className="read-more">Services</span>
+
                 <div className="icon">
                   <span className="flaticon-spray-gun"></span>
                 </div>

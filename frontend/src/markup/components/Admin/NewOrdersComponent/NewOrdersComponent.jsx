@@ -1,3 +1,341 @@
+// import React, { useState, useEffect } from "react";
+// import { Button, Table } from "react-bootstrap";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import {
+//   faCar,
+//   faShoppingCart,
+//   faUser,
+//   faEdit,
+//   faTimes,
+// } from "@fortawesome/free-solid-svg-icons";
+// import vehicleService from "../../../../services/vehicle.service";
+// import orderService from "../../../../services/order.service";
+// import { useNavigate, useLocation } from "react-router";
+// import { useAuth } from "../../../../Context/AuthContext";
+// import OrdersComponent from "../OrdersComponent/OrdersComponent";
+
+// function CustomerDetailComponent() {
+//   const [showVehicleForm, setShowVehicleForm] = useState(false);
+//   const [vehicle_year, setVehicleYear] = useState("");
+//   const [vehicle_make, setVehicleMake] = useState("");
+//   const [vehicle_model, setVehicleModel] = useState("");
+//   const [vehicle_type, setVehicleType] = useState("");
+//   const [vehicle_mileage, setVehicleMileage] = useState("");
+//   const [vehicle_tag, setVehicleTag] = useState("");
+//   const [vehicle_serial, setVehicleSerial] = useState("");
+//   const [vehicle_color, setVehicleColor] = useState("");
+//   const [successMessage, setSuccessMessage] = useState("");
+//   const [vehicleData, setVehicleData] = useState([]);
+//   const [order, setOrders] = useState([]);
+//   const [refreshTrigger, setRefreshTrigger] = useState(false);
+
+//   const location = useLocation();
+//   const customerData =
+//     location.state?.selectedCustomer || location.state?.customer || null;
+//   const customer_id = customerData?.customer_id;
+//   const { fromOrders } = location.state || {};
+//   const navigate = useNavigate();
+//   const { employee } = useAuth();
+//   const loggedInEmployeeToken = employee?.employee_token || "";
+
+//   // Fetch vehicles
+//   useEffect(() => {
+//     const fetchVehicles = async () => {
+//       try {
+//         const response = await vehicleService.getVehicle(
+//           customer_id,
+//           loggedInEmployeeToken
+//         );
+//         setVehicleData(response);
+//       } catch (error) {
+//         console.error("Error fetching vehicles:", error);
+//         setVehicleData([]);
+//       }
+//     };
+//     fetchVehicles();
+//   }, [customer_id, loggedInEmployeeToken, refreshTrigger]);
+
+//   // Fetch orders
+//   useEffect(() => {
+//     const fetchOrders = async () => {
+//       try {
+//         const res = await orderService.getCustomerOrders(
+//           customer_id,
+//           loggedInEmployeeToken
+//         );
+//         setOrders(res.data);
+//       } catch (error) {
+//         console.error("Error fetching orders:", error);
+//         setOrders([]);
+//       }
+//     };
+//     fetchOrders();
+//   }, [customer_id, loggedInEmployeeToken, refreshTrigger]);
+
+//   const handleEdit = () => {
+//     navigate(`/admin/edit-customer/${customer_id}`, {
+//       state: { customerData },
+//     });
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     const vehicleFormData = {
+//       customer_id,
+//       vehicle_year,
+//       vehicle_make,
+//       vehicle_model,
+//       vehicle_type,
+//       vehicle_mileage,
+//       vehicle_tag,
+//       vehicle_serial,
+//       vehicle_color,
+//     };
+
+//     try {
+//       await vehicleService.createVehicle(
+//         vehicleFormData,
+//         loggedInEmployeeToken
+//       );
+//       setSuccessMessage("Vehicle added successfully!");
+//       // Clear form
+//       setVehicleYear("");
+//       setVehicleMake("");
+//       setVehicleModel("");
+//       setVehicleType("");
+//       setVehicleMileage("");
+//       setVehicleTag("");
+//       setVehicleSerial("");
+//       setVehicleColor("");
+//       setRefreshTrigger((prev) => !prev);
+//       setTimeout(() => setSuccessMessage(""), 4000);
+
+//       // Redirect if coming from orders
+//       if (fromOrders) navigate("/admin/order");
+//     } catch (error) {
+//       console.error("Error occurred:", error);
+//       setSuccessMessage("Failed to add vehicle. Please try again.");
+//     }
+//   };
+
+//   const renderVehicleTable = () => (
+//     <Table striped bordered hover className="mt-4">
+//       <thead>
+//         <tr>
+//           <th>Year</th>
+//           <th>Make</th>
+//           <th>Model</th>
+//           <th>Type</th>
+//           <th>Color</th>
+//           <th>Mileage</th>
+//           <th>Tag</th>
+//           <th>Serial</th>
+//         </tr>
+//       </thead>
+//       <tbody>
+//         {vehicleData.map((vehicle) => (
+//           <tr key={vehicle.vehicle_id}>
+//             <td>{vehicle.vehicle_year}</td>
+//             <td>{vehicle.vehicle_make}</td>
+//             <td>{vehicle.vehicle_model}</td>
+//             <td>{vehicle.vehicle_type}</td>
+//             <td>{vehicle.vehicle_color}</td>
+//             <td>{vehicle.vehicle_mileage}</td>
+//             <td>{vehicle.vehicle_tag}</td>
+//             <td>{vehicle.vehicle_serial}</td>
+//           </tr>
+//         ))}
+//       </tbody>
+//     </Table>
+//   );
+
+//   return (
+//     <div className="customer-detail-container">
+//       {/* Customer Information Section */}
+//       <div className="customer-info-section">
+//         <h2 className="section-title">
+//           <FontAwesomeIcon icon={faUser} className="icon" /> Customer
+//           Information
+//         </h2>
+//         <div className="info-card">
+//           <div className="info-item">
+//             <span className="info-label">Name: </span>
+//             <span className="info-value">
+//               {customerData?.customer_first_name}{" "}
+//               {customerData?.customer_last_name}
+//             </span>
+//           </div>
+//           <div className="info-item">
+//             <span className="info-label">Email: </span>
+//             <span className="info-value">{customerData?.customer_email}</span>
+//           </div>
+//           <div className="info-item">
+//             <span className="info-label">Phone: </span>
+//             <span className="info-value">
+//               {customerData?.customer_phone_number}
+//             </span>
+//           </div>
+//           <div className="info-item">
+//             <span className="info-label">Status:</span>
+//             <span className="info-value">
+//               {customerData?.active_customer_status ? "Active" : "Inactive"}
+//             </span>
+//           </div>
+//           <div className="info-item">
+//             <span className="info-label">Edit Customer Info:</span>
+//             <button type="button" onClick={handleEdit}>
+//               <FontAwesomeIcon color="red" icon={faEdit} />
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Vehicle Section */}
+//       <div className="vehicle-info-section">
+//         <h2 className="section-title">
+//           <FontAwesomeIcon icon={faCar} className="icon" /> Vehicles of{" "}
+//           {customerData?.customer_first_name}
+//         </h2>
+
+//         {vehicleData.length > 0 ? (
+//           renderVehicleTable()
+//         ) : (
+//           <div className="info-card">
+//             <div>No vehicles found</div>
+//           </div>
+//         )}
+
+//         {!showVehicleForm && (
+//           <button
+//             type="button"
+//             className="theme-btn btn-style-one add-new-vehicle"
+//             onClick={() => setShowVehicleForm(true)}
+//           >
+//             Add new vehicle
+//           </button>
+//         )}
+
+//         {showVehicleForm && (
+//           <div className="info-card add-new-vehicle-box">
+//             <div
+//               className="section-header1"
+//               style={{ display: "flex", justifyContent: "flex-end" }}
+//             >
+//               <Button
+//                 variant="link"
+//                 type="button"
+//                 onClick={() => setShowVehicleForm(false)}
+//               >
+//                 <FontAwesomeIcon icon={faTimes} className="text-danger" />
+//               </Button>
+//             </div>
+
+//             <section className="contact-section">
+//               <div className="auto-container">
+//                 <div className="contact-title">
+//                   <h2>Add a new vehicle</h2>
+//                 </div>
+//                 {successMessage && (
+//                   <div className="alert alert-success">{successMessage}</div>
+//                 )}
+
+//                 <div className="row clearfix">
+//                   <div className="form-column col-lg-7">
+//                     <div className="inner-column">
+//                       <div className="contact-form">
+//                         <form onSubmit={handleSubmit}>
+//                           {[
+//                             {
+//                               label: "Vehicle year",
+//                               value: vehicle_year,
+//                               setter: setVehicleYear,
+//                             },
+//                             {
+//                               label: "Vehicle make",
+//                               value: vehicle_make,
+//                               setter: setVehicleMake,
+//                             },
+//                             {
+//                               label: "Vehicle model",
+//                               value: vehicle_model,
+//                               setter: setVehicleModel,
+//                               required: true,
+//                             },
+//                             {
+//                               label: "Vehicle type",
+//                               value: vehicle_type,
+//                               setter: setVehicleType,
+//                             },
+//                             {
+//                               label: "Vehicle mileage",
+//                               value: vehicle_mileage,
+//                               setter: setVehicleMileage,
+//                               required: true,
+//                             },
+//                             {
+//                               label: "Vehicle tag",
+//                               value: vehicle_tag,
+//                               setter: setVehicleTag,
+//                               required: true,
+//                             },
+//                             {
+//                               label: "Vehicle serial",
+//                               value: vehicle_serial,
+//                               setter: setVehicleSerial,
+//                               required: true,
+//                             },
+//                             {
+//                               label: "Vehicle color",
+//                               value: vehicle_color,
+//                               setter: setVehicleColor,
+//                               required: true,
+//                             },
+//                           ].map((field, idx) => (
+//                             <div className="form-group col-md-12" key={idx}>
+//                               <input
+//                                 type="text"
+//                                 name={field.label}
+//                                 value={field.value}
+//                                 onChange={(e) => field.setter(e.target.value)}
+//                                 placeholder={field.label}
+//                                 required={field.required || false}
+//                               />
+//                             </div>
+//                           ))}
+
+//                           <div className="form-group col-md-12">
+//                             <button
+//                               type="submit"
+//                               className="theme-btn btn-style-one"
+//                             >
+//                               Add vehicle
+//                             </button>
+//                           </div>
+//                         </form>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+//             </section>
+//           </div>
+//         )}
+//       </div>
+
+//       {/* Orders Section */}
+//       <div className="orders-info-section">
+//         <h2 className="section-title">
+//           <FontAwesomeIcon icon={faShoppingCart} className="icon" /> Orders of{" "}
+//           {customerData?.customer_first_name}
+//         </h2>
+//         {order && <OrdersComponent orderFromCustomer={order} />}
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default CustomerDetailComponent;
+
 import React, { useState, useEffect } from "react";
 import {
   Form,
@@ -84,7 +422,8 @@ function NewOrdersComponent() {
     const timerId = setTimeout(searchCustomers, 500);
     return () => clearTimeout(timerId);
   }, [searchQuery, loggedInEmployeeToken]);
-
+  console.log(customers);
+  console.log(selectedCustomer);
   // Fetch vehicles when customer is selected
   useEffect(() => {
     const fetchVehicles = async () => {
@@ -93,18 +432,42 @@ function NewOrdersComponent() {
         console.log(selectedCustomer.customer_id);
         try {
           setLoading(true);
-          const vehicles = await vehicleService.getVehicle(
+          // const vehicles = await vehicleService.getVehicle(
+          //   selectedCustomer.customer_id,
+          //   loggedInEmployeeToken
+          // );
+          // console.log("Vehicles fetched:", vehicles);
+          // const vehiclesArray = Array.isArray(response.data)
+          //   ? response.data
+          //   : [];
+
+          // if (vehiclesArray.length === 0) {
+          //   setShowAddVehicle(true);
+          //   setVehicles([]);
+          // } else {
+          //   setVehicles(vehiclesArray); // ✅ now you're setting the array
+          //   setShowAddVehicle(false);
+          // }
+          const response = await vehicleService.getVehicle(
             selectedCustomer.customer_id,
             loggedInEmployeeToken
           );
-          if (vehicles.length === 0) {
+
+          console.log("Vehicles fetched:", response);
+
+          const vehiclesArray = Array.isArray(response.data)
+            ? response.data
+            : [];
+
+          if (vehiclesArray.length === 0) {
             setShowAddVehicle(true);
+            setVehicles([]);
           } else {
-            setVehicles(vehicles);
+            setVehicles(vehiclesArray);
             setShowAddVehicle(false);
           }
 
-          console.log(Array.isArray(vehicles));
+          console.log(Array.isArray(vehiclesArray));
         } catch (err) {
           setError("Error fetching vehicles");
           setVehicles([]);
@@ -116,6 +479,7 @@ function NewOrdersComponent() {
     fetchVehicles();
   }, [selectedCustomer, loggedInEmployeeToken]); // Add token to dependencies
 
+  console.log(loggedInEmployeeToken);
   // Fetch common services
   useEffect(() => {
     const fetchServices = async () => {
@@ -206,7 +570,6 @@ function NewOrdersComponent() {
         )}
       </div>
       {error && <div className="alert alert-danger">{error}</div>}
-
       {/* Customer Search Section */}
       {!selectedCustomer && (
         <Card style={{ borderRadius: "10px" }} className="mb-4">
@@ -270,7 +633,6 @@ function NewOrdersComponent() {
           </Card.Body>
         </Card>
       )}
-
       {/* Selected Customer */}
       {selectedCustomer && (
         <DetailCard
@@ -290,7 +652,8 @@ function NewOrdersComponent() {
             <button
               style={{ marginTop: "1rem" }}
               className="theme-btn btn-style-one"
-              type="submit"
+              // type="submit"
+              type="button"
               data-loading-text="Please wait..."
               variant="primary"
               onClick={() =>
@@ -328,9 +691,14 @@ function NewOrdersComponent() {
                   </thead>
                   <tbody>
                     {loading ? (
-                      <Spinner animation="border" role="status" />
+                      <tr>
+                        <td colSpan={8} style={{ textAlign: "center" }}>
+                          <Spinner animation="border" role="status" />
+                        </td>
+                      </tr>
                     ) : (
-                      vehicles?.map((vehicle) => (
+                      Array.isArray(vehicles) &&
+                      vehicles.map((vehicle) => (
                         <tr
                           key={vehicle.vehicle_id}
                           onClick={() => setSelectedVehicle(vehicle)}
@@ -354,7 +722,6 @@ function NewOrdersComponent() {
           </div>
         )
       )}
-
       {/* Selected Vehicle */}
       {selectedVehicle && (
         <DetailCard
@@ -363,7 +730,6 @@ function NewOrdersComponent() {
           onClear={() => setSelectedVehicle(null)}
         />
       )}
-
       {/* Services Selection */}
       {selectedVehicle && (
         <div className="my-4">

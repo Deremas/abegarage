@@ -6,9 +6,9 @@ import { useAuth } from "../../../Context/AuthContext";
 import { BsPersonCircle } from "react-icons/bs";
 
 function Header() {
-  const { isLogged, setIsLogged, employee } = useAuth();
+  const { isLogged, setIsLogged, employee, isChecked } = useAuth();
   const [isNavOpen, setIsNavOpen] = useState(false);
-
+  console.log(employee);
   const logOut = () => {
     loginServices.logOut();
     setIsLogged(false);
@@ -27,12 +27,24 @@ function Header() {
                 Monday - Saturday 7:00AM - 6:00PM
               </div>
             </div>
-            <div className="right-column">
+            {/* <div className="right-column">
               {isLogged && (
                 <div style={{ marginRight: "20px" }} className="phone-number">
                   <BsPersonCircle size={40} />
                   <strong style={{ marginLeft: "5px" }}>
                     {employee?.employee_first_name}
+                  </strong>
+                </div>
+              )}
+            </div> */}
+            <div className="right-column">
+              {/* ✅ Refinement: Wait for the check to complete (`isChecked`)
+                 AND for the employee object to be available. */}
+              {isLogged && isChecked && employee && (
+                <div style={{ marginRight: "20px" }} className="phone-number">
+                  <BsPersonCircle size={40} />
+                  <strong style={{ marginLeft: "5px" }}>
+                    {employee.employee_first_name}
                   </strong>
                 </div>
               )}

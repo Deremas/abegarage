@@ -1,34 +1,23 @@
-import { useState, useEffect } from "react";
+// components/PrivateAuthRoute.jsx
 import { Navigate } from "react-router-dom";
-import getAuth from "../../../utils/Auth";
+import { useAuth } from "../../../Context/AuthContext";
 
 const PrivateAuthRoute = ({ children, roles }) => {
-  const [isChecked, setIsChecked] = useState(false);
-  const [isLogged, setIsLogged] = useState(false);
-  const [isAuthorized, setIsAuthorized] = useState(false);
+  // ✅ Refinement: Destructure the `isChecked` state from your AuthContext.
+  const { isLogged, employee, isChecked } = useAuth();
 
-  useEffect(() => {
-    getAuth().then((user) => {
-      if (user?.employee_token) {
-        setIsLogged(true);
-        if (roles?.includes(user.employee_role)) {
-          setIsAuthorized(true);
-        }
-      }
-      setIsChecked(true);
-    });
-  }, [roles]);
-
+  // ✅ Refinement: Wait for the authentication check to complete.
+  // This prevents the component from rendering anything or redirecting prematurely.
   if (!isChecked) {
-    // While checking, render nothing or a loader
-    return null;
+    return null; // or a loading spinner
   }
 
+  // Once the check is complete, the rest of the logic can run.
   if (!isLogged) {
     return <Navigate to="/login" replace />;
   }
 
-  if (!isAuthorized) {
+  if (roles?.length > 0 && !roles.includes(employee?.employee_role)) {
     return <Navigate to="/unauthorized" replace />;
   }
 
@@ -36,6 +25,45 @@ const PrivateAuthRoute = ({ children, roles }) => {
 };
 
 export default PrivateAuthRoute;
+
+// import { useState, useEffect } from "react";
+// import { Navigate } from "react-router-dom";
+// import getAuth from "../../../utils/Auth";
+
+// const PrivateAuthRoute = ({ children, roles }) => {
+//   const [isChecked, setIsChecked] = useState(false);
+//   const [isLogged, setIsLogged] = useState(false);
+//   const [isAuthorized, setIsAuthorized] = useState(false);
+
+//   useEffect(() => {
+//     getAuth().then((user) => {
+//       if (user?.employee_token) {
+//         setIsLogged(true);
+//         if (roles?.includes(user.employee_role)) {
+//           setIsAuthorized(true);
+//         }
+//       }
+//       setIsChecked(true);
+//     });
+//   }, [roles]);
+
+//   if (!isChecked) {
+//     // While checking, render nothing or a loader
+//     return null;
+//   }
+
+//   if (!isLogged) {
+//     return <Navigate to="/login" replace />;
+//   }
+
+//   if (!isAuthorized) {
+//     return <Navigate to="/unauthorized" replace />;
+//   }
+
+//   return children;
+// };
+
+// export default PrivateAuthRoute;
 
 // import { useState, useEffect } from "react";
 // // Import the route and navigate methods

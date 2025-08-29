@@ -1,5 +1,5 @@
 //Import the //Import from the env
-const api_url = import.meta.env.VITE_API_URL;
+const api_url = import.meta.env.VITE_APP_API_URL;
 //Create a function to send and order create request
 const createOrder = async (orderData, loggedInEmployeeToken) => {
   console.log(orderData);
